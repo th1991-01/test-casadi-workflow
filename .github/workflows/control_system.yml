@@ -73,7 +73,7 @@ jobs:
           sudo sh -c "echo 'deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg' >> /etc/apt/sources.list.d/robotpkg.list"
           curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key | sudo apt-key add -
           sudo apt-get update
-          sudo apt install robotpkg-py310-eigenpy
+          sudo apt install robotpkg-py310-eigenpy robotpkg-py310-casadi
 
       #- name: pinocchio cache restore
       #  id: cache-pinocchio
@@ -98,8 +98,8 @@ jobs:
           cd pinocchio
           git checkout v3.0.0
           mkdir build && cd build
-          # cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_WITH_CASADI_SUPPORT=ON
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_WITH_CASADI_SUPPORT=ON
+          # cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3
           make -j$(nproc)
 
       - name: Install pinocchio
