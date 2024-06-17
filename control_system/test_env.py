@@ -1,4 +1,4 @@
 import casadi
 print("casadi.__version__",casadi.__version__)
-import pinocchio
+import pinocchio as pin
 print("pin.__version__", pin.__version__)
