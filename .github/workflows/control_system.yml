@@ -9,7 +9,9 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+    paths:
+        - "control_system/*"
+        - ".github/workflows/control_system.yml"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
