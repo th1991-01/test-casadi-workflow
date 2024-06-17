@@ -66,3 +66,42 @@ jobs:
         run: |
           cd casadi/build
           sudo make install          
+
+      - name: Prepare Dependencies for pinocchio
+        run: |
+          sudo apt install -qqy git libeigen3-dev libboost-all-dev liburdfdom-dev curl
+          sudo sh -c "echo 'deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg' >> /etc/apt/sources.list.d/robotpkg.list"
+          curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key | sudo apt-key add -
+          sudo apt-get update
+          sudo apt install robotpkg-py310-eigenpy
+
+      - name: pinocchio cache restore
+        id: cache-pinocchio
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-pinocchio
+        with:
+          path: control_system/pinocchio
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('control_system/pinocchio/package.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      # Zenn alumina_type10 氏による スクラップ記事をもとにキャッシュ機構を実装する
+      # https://zenn.dev/link/comments/9b34b34878ea5f
+      - if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
+        name: Build pinocchio
+        run: |
+          git clone --recursive https://github.com/stack-of-tasks/pinocchio
+          cd pinocchio
+          git checkout v3.0.0
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF
+          make -j$(nproc)
+
+      - name: Install pinocchio
+        run: |
+          cd pinocchio/build
+          sudo make install
+
