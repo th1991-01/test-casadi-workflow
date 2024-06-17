@@ -24,7 +24,7 @@ env:
   BUILD_TYPE: Release
   CMAKE_PREFIX_PATH: /opt/openrobots:/usr/local:$CMAKE_PREFIX_PATH
   #PATH: /opt/openrobots/bin:$PATH
-  PKG_CONFIG_PATH: /opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
+  #PKG_CONFIG_PATH: /opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
   PYTHONPATH: /usr/local/lib/python3.10/dist-packages:$PYTHONPATH
   LD_LIBRARY_PATH: /opt/openrobots/lib:$LD_LIBRARY_PATH
 
