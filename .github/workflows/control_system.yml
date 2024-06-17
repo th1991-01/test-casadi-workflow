@@ -23,6 +23,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   CMAKE_PREFIX_PATH: /opt/openrobots:/usr/local:$CMAKE_PREFIX_PATH
+  PYTHONPATH: /usr/local/lib/python3.10/dist-packages:$PYTHONPATH
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -90,8 +91,9 @@ jobs:
 
       # Zenn alumina_type10 氏による スクラップ記事をもとにキャッシュ機構を実装する
       # https://zenn.dev/link/comments/9b34b34878ea5f
-      - if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
-        name: Build pinocchio
+      #- if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
+      #  name: Build pinocchio
+      - name: Build pinocchio
         run: |
           git clone --recursive https://github.com/stack-of-tasks/pinocchio
           cd pinocchio
