@@ -23,7 +23,10 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   CMAKE_PREFIX_PATH: /opt/openrobots:/usr/local:$CMAKE_PREFIX_PATH
+  PATH: /opt/openrobots/bin:$PATH
+  PKG_CONFIG_PATH: /opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
   PYTHONPATH: /usr/local/lib/python3.10/dist-packages:$PYTHONPATH
+  LD_LIBRARY_PATH: /opt/openrobots/lib:$LD_LIBRARY_PATH
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -90,16 +93,15 @@ jobs:
 
       # Zenn alumina_type10 氏による スクラップ記事をもとにキャッシュ機構を実装する
       # https://zenn.dev/link/comments/9b34b34878ea5f
-      #- if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
-      #  name: Build pinocchio
-      - name: Build pinocchio
+      - if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
+        name: Build pinocchio
+      #- name: Build pinocchio
         run: |
           git clone --recursive https://github.com/stack-of-tasks/pinocchio
           cd pinocchio
           git checkout v3.0.0
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_WITH_CASADI_SUPPORT=ON
-          # cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3
           make -j$(nproc)
 
       - name: Install pinocchio
