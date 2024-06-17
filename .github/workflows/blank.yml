@@ -33,6 +33,7 @@ jobs:
     steps:
       - name: Prepare Dependencies for casadi
         run: |
+          ls
           sudo apt install -y git cmake build-essential wget curl liblapack-dev libblas-dev pkg-config gfortran python3-pip
           pip3 install casadi
           
