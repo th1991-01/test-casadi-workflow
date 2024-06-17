@@ -90,8 +90,8 @@ jobs:
 
       # Zenn alumina_type10 氏による スクラップ記事をもとにキャッシュ機構を実装する
       # https://zenn.dev/link/comments/9b34b34878ea5f
-      - if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
-        name: Build pinocchio
+      #- if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
+      - name: Build pinocchio
         run: |
           git clone --recursive https://github.com/stack-of-tasks/pinocchio
           cd pinocchio
@@ -104,4 +104,8 @@ jobs:
         run: |
           cd pinocchio/build
           sudo make install
+
+      - name: Test env
+        run: |
+          python3 test_env.py
 
