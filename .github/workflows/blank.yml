@@ -22,8 +22,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Prepare Dependencies for casadi
+        run: |
+          sudo apt install -y git cmake build-essential wget curl liblapack-dev libblas-dev pkg-config gfortran python3-pip
+          pip3 install casadi
+          
       - name: casadi cache restore
-        id: cache-pinocchio
+        id: cache-casadi
         uses: actions/cache@v4
         env:
           cache-name: cache-casadi
@@ -38,7 +43,6 @@ jobs:
       - if: ${{ steps.cache-casadi.outputs.cache-hit != 'true' }}
         name: Build casadi
         run: |
-          sudo apt install -y git cmake build-essential wget curl liblapack-dev libblas-dev pkg-config gfortran python3-pip
           git clone -b 3.6.5 https://github.com/casadi/casadi.git
           cd casadi
           mkdir build && cd build
