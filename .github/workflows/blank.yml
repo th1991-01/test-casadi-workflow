@@ -22,7 +22,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Build casadi
+      - name: casadi cache restore
+        id: cache-pinocchio
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-casadi
+        with:
+          path: control_system/casadi
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('control_system/casadi/package.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-casadi.outputs.cache-hit != 'true' }}
+        name: Build casadi
         run: |
           sudo apt install -y git cmake build-essential wget curl liblapack-dev libblas-dev pkg-config gfortran python3-pip
           git clone -b 3.6.5 https://github.com/casadi/casadi.git
@@ -30,5 +44,8 @@ jobs:
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DWITH_IPOPT=ON -DWITH_OSQP=ON -DWITH_BUILD_REQUIRED=ON
           make -j$(nproc)
-          echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${SMALL_NIMBUS_PATH}/control_system/casadi_control' >> $HOME/.bashrc
-          
+
+      - name: Install casadi
+        run: |
+          cd casadi/build
+          sudo make install          
