@@ -98,7 +98,7 @@ jobs:
           git checkout v3.0.0
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_WITH_CASADI_SUPPORT=ON
-          make -j$(nproc)
+          make -j2
 
       - name: Install pinocchio
         run: |
