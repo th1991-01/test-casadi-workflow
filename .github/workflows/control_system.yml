@@ -75,23 +75,23 @@ jobs:
           sudo apt-get update
           sudo apt install robotpkg-py310-eigenpy
 
-      - name: pinocchio cache restore
-        id: cache-pinocchio
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-pinocchio
-        with:
-          path: control_system/pinocchio
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('control_system/pinocchio/package.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+      #- name: pinocchio cache restore
+      #  id: cache-pinocchio
+      #  uses: actions/cache@v4
+      #  env:
+      #    cache-name: cache-pinocchio
+      #  with:
+      #    path: control_system/pinocchio
+      #    key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('control_system/pinocchio/package.xml') }}
+      #    restore-keys: |
+      #      ${{ runner.os }}-build-${{ env.cache-name }}-
+      #      ${{ runner.os }}-build-
+      #      ${{ runner.os }}-
 
       # Zenn alumina_type10 氏による スクラップ記事をもとにキャッシュ機構を実装する
       # https://zenn.dev/link/comments/9b34b34878ea5f
-      #- if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
-      - name: Build pinocchio
+      - if: ${{ steps.cache-pinocchio.outputs.cache-hit != 'true' }}
+        name: Build pinocchio
         run: |
           git clone --recursive https://github.com/stack-of-tasks/pinocchio
           cd pinocchio
