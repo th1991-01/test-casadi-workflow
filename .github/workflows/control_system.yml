@@ -39,7 +39,6 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y libeigen3-dev
           sudo apt install -y git cmake build-essential wget curl liblapack-dev libblas-dev pkg-config gfortran python3-pip
-          pip3 install casadi
           
       - name: casadi cache restore
         id: cache-casadi
@@ -100,12 +99,16 @@ jobs:
           git checkout v3.0.0
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_DOCUMENTATION=OFF -DBUILD_TESTING=OFF -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_WITH_CASADI_SUPPORT=ON
-          make -j2
+          make -j$(nproc)
 
       - name: Install pinocchio
         run: |
           cd pinocchio/build
           sudo make install
+
+      - name: Install python package
+        run: |
+          pip3 install casadi
 
       - name: Test env
         run: |
