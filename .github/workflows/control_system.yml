@@ -36,7 +36,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare Dependencies for casadi
         run: |
-          ls
+          sudo apt-get update && sudo apt-get install -y libeigen3-dev
           sudo apt install -y git cmake build-essential wget curl liblapack-dev libblas-dev pkg-config gfortran python3-pip
           pip3 install casadi
           
@@ -107,5 +107,6 @@ jobs:
 
       - name: Test env
         run: |
+          export PYTHONPATH=/usr/local/lib/python3.10/dist-packages:$PYTHONPATH
           python3 test_env.py
 
