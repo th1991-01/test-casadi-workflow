@@ -23,7 +23,7 @@ env:
   CMAKE_PREFIX_PATH: /opt/openrobots:/usr/local:$CMAKE_PREFIX_PATH
   PYTHONPATH: /usr/local/lib/python3.10/dist-packages:$PYTHONPATH
   LD_LIBRARY_PATH: /opt/openrobots/lib:$LD_LIBRARY_PATH
-  ACADOS_SOURCE_DIR: ${{github.workspace}}/acados
+  ACADOS_SOURCE_DIR: ${{github.workspace}}/control_system/acados
 
 jobs:
   build:
