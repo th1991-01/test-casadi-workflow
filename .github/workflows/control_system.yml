@@ -23,6 +23,7 @@ env:
   CMAKE_PREFIX_PATH: /opt/openrobots:/usr/local:$CMAKE_PREFIX_PATH
   PYTHONPATH: /usr/local/lib/python3.10/dist-packages:$PYTHONPATH
   LD_LIBRARY_PATH: /opt/openrobots/lib:$LD_LIBRARY_PATH
+  ACADOS_SOURCE_DIR: ${{github.workspace}}/acados
 
 jobs:
   build:
@@ -147,6 +148,13 @@ jobs:
 
     - name: Cpp build test
       run: |
+        echo $ACADOS_SOURCE_DIR
+        cd $ACADOS_SOURCE_DIR
+        ls
+        pwd
+
+    - name: Cpp build test
+      run: |        
         cd test_casadi_env_tool
         mkdir build && cd build
         # cmake ..
