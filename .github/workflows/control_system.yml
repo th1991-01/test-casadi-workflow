@@ -115,7 +115,21 @@ jobs:
         cd pinocchio/build
         sudo make install
 
-    - name: Build acados
+    - name: acados cache restore
+      id: cache-acados
+      uses: actions/cache@v4
+      env:
+        cache-name: cache-acados
+      with:
+        path: control_system/acados
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('control_system/acados/interfaces/acados_template/acados_template/utils.py') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - if: ${{ steps.cache-acados.outputs.cache-hit != 'true' }}
+      name: Build acados
       run: |
         git clone -b v0.3.2 https://github.com/acados/acados.git --recursive
         cd acados && mkdir build && cd build
@@ -128,6 +142,7 @@ jobs:
         make install
         cd ..
         pip3 install -e interfaces/acados_template
+        yes | python3 -c "from acados_template import utils; utils.get_tera()"
 
     - name: Cpp build test
       run: |
