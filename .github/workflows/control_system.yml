@@ -112,6 +112,7 @@ jobs:
 
     - name: Install pinocchio
       run: |
+        pip3 install numpy==1.26.4
         cd pinocchio/build
         sudo make install
 
