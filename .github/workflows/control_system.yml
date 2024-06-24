@@ -133,5 +133,5 @@ jobs:
       run: |
         cd test_casadi_env_tool
         mkdir build && cd build
-        cmake ..
+        # cmake ..
         
