@@ -124,6 +124,7 @@ jobs:
 
     - name: Install acados
       run: |
+        cd acados/build
         make install
         cd ..
         pip3 install -e interfaces/acados_template
