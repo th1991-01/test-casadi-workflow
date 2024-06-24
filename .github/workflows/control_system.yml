@@ -4,11 +4,11 @@ name: control_system
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths-ignore:
       - '*.md'
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
         - "control_system/*"
         - ".github/workflows/control_system.yml"
